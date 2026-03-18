@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+// ✅ Use environment variable
+const API_URL = import.meta.env.VITE_API_URL + '/api';
+
 // Track if we're already refreshing to avoid multiple requests
 let isRefreshing = false;
 let failedQueue = [];
@@ -18,7 +21,7 @@ const processQueue = (error, token = null) => {
 
 // Create axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: API_URL,
   timeout: 10000,
 });
 
@@ -68,7 +71,7 @@ axiosInstance.interceptors.response.use(
           throw new Error('No refresh token');
         }
 
-        const response = await axios.post('http://localhost:5000/api/auth/refresh-token', {
+        const response = await axios.post(`${API_URL}/auth/refresh-token`, {
           refreshToken
         });
 
